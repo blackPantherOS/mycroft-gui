@@ -102,6 +102,7 @@ void DelegateLoader::createObject()
     m_delegate->setQmlUrl(m_delegateUrl);
     m_delegate->setSkillView(m_view);
     m_delegate->setSessionData(m_view->sessionDataForSkill(m_skillId));
+    m_delegate->setTimeout(m_timeout);
     m_component->completeCreate();
 
     emit delegateCreated();
@@ -124,6 +125,24 @@ void DelegateLoader::setFocus(bool focus)
         m_delegate->forceActiveFocus((Qt::FocusReason)AbstractSkillView::ServerEventFocusReason);
     } else if (m_delegate) {
         m_delegate->setFocus(false);
+    }
+}
+
+void DelegateLoader::setTimeout(int timeout)
+{
+    if (m_delegate) {
+        m_delegate->setTimeout(timeout);
+    } else {
+        m_timeout = timeout;
+    }
+}
+
+int DelegateLoader::timeout() const
+{
+    if (m_delegate) {
+        return m_delegate->timeout();
+    } else {
+        return m_timeout;
     }
 }
 
@@ -263,6 +282,7 @@ bool AbstractDelegate::childMouseEventFilter(QQuickItem *item, QEvent *event)
     if (event->type() == QEvent::MouseButtonPress) {
         forceActiveFocus(Qt::MouseFocusReason);
         triggerGuiEvent(QStringLiteral("system.gui.user.interaction"), QVariantMap({{QStringLiteral("skillId"), m_skillId}}));
+        emit userInteraction();
     }
     return QQuickItem::childMouseEventFilter(item, event);
 }
@@ -271,11 +291,13 @@ void AbstractDelegate::mousePressEvent(QMouseEvent *event)
 {
     forceActiveFocus(Qt::MouseFocusReason);
     triggerGuiEvent(QStringLiteral("system.gui.user.interaction"), QVariantMap({{QStringLiteral("skillId"), m_skillId}}));
+    emit userInteraction();
 }
 
 void AbstractDelegate::keyReleaseEvent(QKeyEvent *event)
 {
     triggerGuiEvent(QStringLiteral("system.gui.user.interaction"), QVariantMap({{QStringLiteral("skillId"), m_skillId}}));
+    emit userInteraction();
 }
 
 void AbstractDelegate::focusInEvent(QFocusEvent *event)
@@ -454,6 +476,21 @@ void AbstractDelegate::setSessionData(SessionDataMap *data)
 SessionDataMap *AbstractDelegate::sessionData() const
 {
     return m_data;
+}
+
+int AbstractDelegate::timeout() const
+{
+    return m_timeout;
+}
+
+void AbstractDelegate::setTimeout(int timeout)
+{
+    if (timeout == m_timeout) {
+        return;
+    }
+
+    m_timeout = timeout;
+    emit timeoutChanged();
 }
 
 void AbstractDelegate::setQmlUrl(const QUrl &url)

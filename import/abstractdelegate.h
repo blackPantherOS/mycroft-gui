@@ -38,6 +38,9 @@ public:
 
     void setFocus(bool focus);
 
+    int timeout() const;
+    void setTimeout(int timeout);
+
     QUrl translationsUrl() const;
 
 Q_SIGNALS:
@@ -48,6 +51,7 @@ private:
 
     QString m_skillId;
     QUrl m_delegateUrl;
+    int m_timeout = 0;
     bool m_focus = false;
     QQmlComponent *m_component = nullptr;
     AbstractSkillView *m_view;
@@ -72,9 +76,9 @@ class AbstractDelegate: public QQuickItem
     /**
      * The idle time after Mycroft stopped talking  before the delegate wants to return to the resting face expressed in milliseconds.
      * The view may or may not follow this.
-     * By default, it's 5 seconsa
+     * By default, it's 30 seconds
      */
-    Q_PROPERTY(int timeout MEMBER m_timeout NOTIFY timeoutChanged)
+    Q_PROPERTY(int timeout READ timeout WRITE setTimeout NOTIFY timeoutChanged)
 
     /**
      * Source file for a skill-wide background (independent to the background item): it can be either an image or a QML file. 
@@ -132,6 +136,9 @@ public:
      * The only way the skill UI has to access the data sent by the server
      */
     SessionDataMap *sessionData() const;
+
+    int timeout() const;
+    void setTimeout(int timeout);
 
     // Setters and getters for the padding
     int leftPadding() const;
@@ -223,6 +230,7 @@ Q_SIGNALS:
     void bottomPaddingChanged();
     void contentWidthChanged();
     void contentHeightChanged();
+    void userInteraction();
 
 private:
     void syncChildItemsGeometry(const QSizeF &size);

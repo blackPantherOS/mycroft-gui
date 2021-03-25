@@ -80,6 +80,8 @@ public:
     void writeProperties(const QString &skillId, const QVariantMap &data);
     void deleteProperty(const QString &skillId, const QString &property);
 
+    Q_INVOKABLE void showHomeScreen();
+
 Q_SIGNALS:
     /**
      * The skill that was open due voice interaction has been closed either due to timeout or user interaction

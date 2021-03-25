@@ -189,6 +189,11 @@ void AbstractSkillView::deleteProperty(const QString &skillId, const QString &pr
     m_guiWebSocket->sendTextMessage(QString::fromUtf8(doc.toJson()));
 }
 
+void AbstractSkillView::showHomeScreen()
+{
+    m_controller->sendRequest(QStringLiteral("mycroft.device.show.idle"), {});
+}
+
 MycroftController::Status AbstractSkillView::status() const
 {
     if (m_reconnectTimer.isActive()) {
@@ -469,6 +474,7 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
         }
 
         const int position = doc[QStringLiteral("position")].toInt();
+        const int timeout = doc[QStringLiteral("override")].toInt();
 
         DelegatesModel *delegatesModel = m_activeSkillsModel->delegatesModelForSkill(skillId);
 
@@ -498,6 +504,7 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
 
             DelegateLoader *loader = new DelegateLoader(this);
             loader->init(skillId, delegateUrl);
+            loader->setTimeout(timeout);
 
             if (!m_translatorsForSkill.contains(skillId)) {
                 QTranslator *translator = new QTranslator(this);

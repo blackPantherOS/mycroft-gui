@@ -119,6 +119,26 @@ Mycroft.AbstractSkillView {
         }
     }
 
+    Timer {
+        id: skillTimeout
+        function startCountdown(seconds) {
+            interval = seconds * 100;
+
+            if (seconds <= 0) {
+                running = false;
+            }
+
+            restart();
+        }
+        onRunningChanged: {
+            //Extra check to make sure we never run with null timeout
+            if (running && interval <= 0) {
+                running = false;
+            }
+        }
+        onTriggered: root.showHomeScreen();
+    }
+
     Item {
         id: delegatesContainer
         width: root.width - root.leftPadding - root.rightPadding
@@ -150,6 +170,10 @@ Mycroft.AbstractSkillView {
 
                     if (current && delegatesView.count === 0) {
                         root.open = false;
+                    }
+
+                    if (current && delegatesView.count > 0) {
+                        skillTimeout.startCountdown(currentItem.contentItem.timeout);
                     }
                 }
                 Behavior on opacity {
@@ -193,6 +217,9 @@ Mycroft.AbstractSkillView {
                     }
                     onCurrentIndexChanged: {
                         delegates.currentIndex = currentIndex
+                        if (delegate.current) {
+                            skillTimeout.startCountdown(currentItem.contentItem.timeout);
+                        }
                     }
 
                     Keys.onLeftPressed: {
@@ -224,7 +251,7 @@ Mycroft.AbstractSkillView {
                         model: delegates
 
                         delegate: Controls.Control {
-                            id: delegate
+                            id: innerDelegate
 
                             Kirigami.ColumnView.reservedSpace: 0
                             Kirigami.ColumnView.fillWidth: model.delegateUi ? model.delegateUi.fillWidth : false
@@ -241,7 +268,7 @@ Mycroft.AbstractSkillView {
                             visible: x + width >= delegatesView.contentX || x >= delegatesView.contentX + delegatesView.width
                             property int extraBottomPadding: pageIndicator.visible ? Kirigami.Units.largeSpacing * 2 + pageIndicator.height : 0
                             signal backRequested
-                                                        
+
                             Component.onCompleted: {
                                     backRequested.connect(delegatesView.globalBackRequest)
                             }
@@ -254,6 +281,11 @@ Mycroft.AbstractSkillView {
                                         if (root.width >= root.switchWidth) {
                                             focusAnim.restart();
                                         }
+                                    }
+                                }
+                                onUserInteraction: {
+                                    if (delegate.current) {
+                                        skillTimeout.startCountdown(model.delegateUi.timeout);
                                     }
                                 }
                             }
