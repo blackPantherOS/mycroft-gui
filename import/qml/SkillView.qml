@@ -122,7 +122,7 @@ Mycroft.AbstractSkillView {
     Timer {
         id: skillTimeout
         function startCountdown(seconds) {
-            interval = seconds * 100;
+            interval = seconds * 1000;
 
             if (seconds <= 0) {
                 running = false;
