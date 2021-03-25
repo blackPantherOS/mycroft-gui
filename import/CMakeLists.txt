@@ -12,6 +12,7 @@ set(mycroftimport_SRCS
     globalsettings.cpp
     filereader.cpp
     audiorec.cpp
+    pagemanager.cpp
     )
 
 configure_file(controllerconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/controllerconfig.h)

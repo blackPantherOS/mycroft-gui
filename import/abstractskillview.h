@@ -28,6 +28,7 @@ class AbstractSkillView;
 class AbstractDelegate;
 class SessionDataMap;
 class QTranslator;
+class PageManager;
 
 class AbstractSkillView: public QQuickItem
 {
@@ -79,6 +80,7 @@ public:
 
     void writeProperties(const QString &skillId, const QVariantMap &data);
     void deleteProperty(const QString &skillId, const QString &property);
+    void deleteLastPage();
 
 Q_SIGNALS:
     /**
@@ -102,5 +104,6 @@ private:
     MycroftController *m_controller;
     QWebSocket *m_guiWebSocket;
     ActiveSkillsModel *m_activeSkillsModel;
+    PageManager *m_pageManager;
 };
 

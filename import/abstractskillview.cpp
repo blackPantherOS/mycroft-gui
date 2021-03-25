@@ -22,6 +22,7 @@
 #include "sessiondatamap.h"
 #include "sessiondatamodel.h"
 #include "delegatesmodel.h"
+#include "pagemanager.h"
 
 #include <QWebSocket>
 #include <QUuid>
@@ -38,6 +39,7 @@ AbstractSkillView::AbstractSkillView(QQuickItem *parent)
       m_controller(MycroftController::instance())
 {
     m_activeSkillsModel = new ActiveSkillsModel(this);
+    m_pageManager = new PageManager(this);
 
     m_guiWebSocket = new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this);
     m_controller->registerView(this);
@@ -108,6 +110,8 @@ AbstractSkillView::AbstractSkillView(QQuickItem *parent)
         [this](const QString &skillId) {
             m_activeSkillsModel->checkGuiActivation(skillId);
         });
+    
+    connect(m_pageManager, &PageManager::delegateTimeoutCompleted, this, &AbstractSkillView::deleteLastPage);
 }
 
 AbstractSkillView::~AbstractSkillView()
@@ -187,6 +191,11 @@ void AbstractSkillView::deleteProperty(const QString &skillId, const QString &pr
 
     QJsonDocument doc(root);
     m_guiWebSocket->sendTextMessage(QString::fromUtf8(doc.toJson()));
+}
+
+void AbstractSkillView::deleteLastPage() {
+    qDebug() << "Idle Timeout Completed";
+    m_controller->sendRequest(QStringLiteral("mycroft.device.show.idle"), {});
 }
 
 MycroftController::Status AbstractSkillView::status() const
@@ -463,6 +472,9 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
     // Insert new new gui delegates
     } else if (type == QLatin1String("mycroft.gui.list.insert")) {
         const QString skillId = doc[QStringLiteral("namespace")].toString();
+        const QVariant override = doc[QStringLiteral("override")].toVariant();
+        m_pageManager->setDelegateOverride(override);
+        
         if (skillId.isEmpty()) {
             qWarning() << "No skill_id provided in mycroft.gui.list.insert";
             return;

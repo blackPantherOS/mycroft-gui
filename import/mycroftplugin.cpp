@@ -28,6 +28,7 @@
 #include "delegatesmodel.h"
 #include "sessiondatamap.h"
 #include "audiorec.h"
+#include "pagemanager.h"
 
 #include <QQmlEngine>
 #include <QQmlContext>
@@ -92,6 +93,7 @@ void MycroftPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<ActiveSkillsModel>(uri, 1, 0, "ActiveSkillsModel", QStringLiteral("You cannot instantiate items of type ActiveSkillsModel"));
     qmlRegisterUncreatableType<DelegatesModel>(uri, 1, 0, "DelegatesModel", QStringLiteral("You cannot instantiate items of type DelegatesModel"));
     qmlRegisterUncreatableType<SessionDataMap>(uri, 1, 0, "SessionDataMap", QStringLiteral("You cannot instantiate items of type SessionDataMap"));
+    qmlRegisterUncreatableType<PageManager>(uri, 1, 0, "PageManager", QStringLiteral("You cannot instantiate items of type PageManager"));
 
     //use this only when all qml files are registered by the plugin
    // qmlProtectModule(uri, 1);
