@@ -474,7 +474,7 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
         }
 
         const int position = doc[QStringLiteral("position")].toInt();
-        const int timeout = doc[QStringLiteral("override")].toInt();
+        const int timeout = doc[QStringLiteral("override")].isDouble() ? doc[QStringLiteral("override")].toInt() : 0;
 
         DelegatesModel *delegatesModel = m_activeSkillsModel->delegatesModelForSkill(skillId);
 
