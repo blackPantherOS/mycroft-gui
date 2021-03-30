@@ -43,8 +43,10 @@ Item {
     }
 
     function setCurrent(image) {
-        backgroundImage.currentImage = image;
-        fadeAnim.restart();
+        if (image.status === Image.Ready) {
+            backgroundImage.currentImage = image;
+            fadeAnim.restart();
+        }
     }
 
     Rectangle {
@@ -83,7 +85,9 @@ Item {
             duration: 1000
             easing.type: Easing.InOutQuad
         }
-        OpacityAnimator {
+        // OpacityAnimator makes the image disappear immediately
+        PropertyAnimation {
+            property: "opacity"
             target: backgroundImage.currentImage == image1 ? image2 : image1
             from: 1
             to: 0
