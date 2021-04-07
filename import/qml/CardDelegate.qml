@@ -39,7 +39,6 @@ Delegate {
     // Allows setting a color overlay for card background
     property alias cardBackgoundOverlayColor: cardBackgound.color
     property alias cardBackgroundImage: backgroundImage.source
-    property bool isbgvisible: backgroundImage.visible
     property int cardRadius: 20
     
     background: Rectangle {
