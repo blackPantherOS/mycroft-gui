@@ -28,6 +28,11 @@ Delegate {
     topPadding: 0
     rightPadding: 0
     
+    rightInset: cardRightPadding
+    leftInset: cardLeftPadding
+    topInset: cardTopPadding
+    bottomInset: cardBottomPadding
+    
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
     property alias cardBackgoundBorderColor: cardBackgound.color
@@ -79,13 +84,7 @@ Delegate {
         }
     }
 
-    contentItem: Controls.Control {
+    contentItem: Item {
         z: 2
-        // Make sure any content always fits inside the card content item
-        anchors.fill: parent
-        anchors.leftMargin: cardLeftPadding
-        anchors.rightMargin: cardRightPadding
-        anchors.topMargin: cardTopPadding
-        anchors.bottomMargin: cardBottomPadding
     }
 }
