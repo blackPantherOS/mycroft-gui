@@ -12,6 +12,7 @@
         <file>qml/SlidingImage.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/VideoPlayer.qml</file>
+        <file>qml/CardDelegate.qml</file>
         <file>qml/private/ImageBackground.qml</file>
     </qresource>
 </RCC>
