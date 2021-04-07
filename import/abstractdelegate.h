@@ -104,6 +104,14 @@ class AbstractDelegate: public QQuickItem
     Q_PROPERTY(int bottomPadding READ bottomPadding WRITE setBottomPadding NOTIFY bottomPaddingChanged)
 
     /**
+     * Inset adds a space between the delagate edges and the background, adding an extra empty padding around the delegate
+     */
+    Q_PROPERTY(int leftInset READ leftInset WRITE setLeftInset NOTIFY leftInsetChanged)
+    Q_PROPERTY(int rightInset READ rightInset WRITE setRightInset NOTIFY rightInsetChanged)
+    Q_PROPERTY(int topInset READ topInset WRITE setTopInset NOTIFY topInsetChanged)
+    Q_PROPERTY(int bottomInset READ bottomInset WRITE setBottomInset NOTIFY bottomInsetChanged)
+
+    /**
      * The size of the contents: the size of this item minux the padding
      */
     Q_PROPERTY(int contentWidth READ contentWidth NOTIFY contentWidthChanged)
@@ -145,6 +153,19 @@ public:
 
     int bottomPadding() const;
     void setBottomPadding(int padding);
+
+    // Setters and getters for the inset
+    int leftInset() const;
+    void setLeftInset(int inset);
+
+    int topInset() const;
+    void setTopInset(int inset);
+
+    int rightInset() const;
+    void setRightInset(int inset);
+
+    int bottomInset() const;
+    void setBottomInset(int inset);
 
     int contentWidth() const;
     int contentHeight() const;
@@ -221,6 +242,10 @@ Q_SIGNALS:
     void rightPaddingChanged();
     void topPaddingChanged();
     void bottomPaddingChanged();
+    void leftInsetChanged();
+    void rightInsetChanged();
+    void topInsetChanged();
+    void bottomInsetChanged();
     void contentWidthChanged();
     void contentHeightChanged();
 
@@ -258,6 +283,11 @@ private:
     int m_rightPadding = 0;
     int m_topPadding = 0;
     int m_bottomPadding = 0;
+
+    int m_leftInset = 0;
+    int m_rightInset = 0;
+    int m_topInset = 0;
+    int m_bottomInset = 0;
 
     bool m_contentItemAutoWidth = true;
     bool m_contentItemAutoHeight = true;
