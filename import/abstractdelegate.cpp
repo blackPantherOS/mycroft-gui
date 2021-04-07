@@ -158,22 +158,22 @@ void AbstractDelegate::triggerGuiEvent(const QString &eventName, const QVariantM
 void AbstractDelegate::syncChildItemsGeometry(const QSizeF &size)
 {
     if (m_contentItem) {
-        m_contentItem->setX(m_leftPadding);
-        m_contentItem->setY(m_topPadding);
+        m_contentItem->setX(m_leftPadding + m_leftInset);
+        m_contentItem->setY(m_topPadding + m_topInset);
         if (m_contentItemAutoWidth && m_contentItemAutoHeight) {
-            m_contentItem->setSize(QSizeF(size.width() - m_leftPadding - m_rightPadding,
-                size.height() - m_topPadding - m_bottomPadding));
+            m_contentItem->setSize(QSizeF(size.width() - m_leftPadding - m_rightPadding - m_leftInset - m_rightInset,
+                size.height() - m_topPadding - m_bottomPadding - m_topInset - m_bottomInset));
         } else if (m_contentItemAutoWidth) {
-            m_contentItem->setWidth(size.width() - m_leftPadding - m_rightPadding);
+            m_contentItem->setWidth(size.width() - m_leftPadding - m_rightPadding - m_leftInset - m_rightInset);
         } else if (m_contentItemAutoHeight) {
-            m_contentItem->setHeight(size.height() - m_topPadding - m_bottomPadding);
+            m_contentItem->setHeight(size.height() - m_topPadding - m_bottomPadding - m_topInset - m_bottomInset);
         }
     }
 
     if (m_backgroundItem) {
-        m_backgroundItem->setX(0);
-        m_backgroundItem->setY(0);
-        m_backgroundItem->setSize(size);
+        m_backgroundItem->setX(m_leftInset);
+        m_backgroundItem->setY(m_topInset);
+        m_backgroundItem->setSize(size - QSizeF(m_leftInset + m_rightInset, m_topInset + m_bottomInset));
     }
 
 }
@@ -314,16 +314,16 @@ void AbstractDelegate::setContentItem(QQuickItem *item)
 
     m_contentItem = item;
     item->setParentItem(this);
-    m_contentItem->setX(m_leftPadding);
-    m_contentItem->setY(m_topPadding);
+    m_contentItem->setX(m_leftPadding + m_leftInset);
+    m_contentItem->setY(m_topPadding + m_topInset);
 
     if (m_contentItemAutoWidth && m_contentItemAutoHeight) {
-        m_contentItem->setSize(QSizeF(width() - m_leftPadding - m_rightPadding,
-            height() - m_topPadding - m_bottomPadding));
+        m_contentItem->setSize(QSizeF(width() - m_leftPadding - m_rightPadding - m_leftInset - m_rightInset,
+            height() - m_topPadding - m_bottomPadding - m_topInset - m_bottomInset));
     } else if (m_contentItemAutoWidth) {
-        m_contentItem->setWidth(width() - m_leftPadding - m_rightPadding);
+        m_contentItem->setWidth(width() - m_leftPadding - m_rightPadding - m_leftInset - m_rightInset);
     } else if (m_contentItemAutoHeight) {
-        m_contentItem->setHeight(height() - m_topPadding - m_bottomPadding);
+        m_contentItem->setHeight(height() - m_topPadding - m_bottomPadding- m_topInset - m_bottomInset);
     }
 
     emit contentItemChanged();
@@ -420,14 +420,87 @@ void AbstractDelegate::setBottomPadding(int padding)
     emit contentHeightChanged();
 }
 
+
+int AbstractDelegate::leftInset() const
+{
+    return m_leftInset;
+}
+
+void AbstractDelegate::setLeftInset(int inset)
+{
+    if (m_leftInset == inset) {
+        return;
+    }
+
+    m_leftInset = inset;
+    syncChildItemsGeometry(size());
+    emit leftInsetChanged();
+    emit contentWidthChanged();
+}
+
+
+int AbstractDelegate::topInset() const
+{
+    return m_topInset;
+}
+
+void AbstractDelegate::setTopInset(int inset)
+{
+    if (m_topInset == inset) {
+        return;
+    }
+
+    m_topInset = inset;
+    syncChildItemsGeometry(size());
+    emit topInsetChanged();
+    emit contentHeightChanged();
+}
+
+
+int AbstractDelegate::rightInset() const
+{
+    return m_rightInset;
+}
+
+void AbstractDelegate::setRightInset(int inset)
+{
+    if (m_rightInset == inset) {
+        return;
+    }
+
+    m_rightInset = inset;
+    syncChildItemsGeometry(size());
+    emit rightInsetChanged();
+    emit contentWidthChanged();
+}
+
+
+int AbstractDelegate::bottomInset() const
+{
+    return m_bottomInset;
+}
+
+void AbstractDelegate::setBottomInset(int inset)
+{
+    if (m_bottomInset == inset) {
+        return;
+    }
+
+    m_bottomInset = inset;
+    syncChildItemsGeometry(size());
+    emit bottomInsetChanged();
+    emit contentHeightChanged();
+}
+
+
 int AbstractDelegate::contentWidth() const
 {
-    return width() - m_leftPadding - m_rightPadding;
+    return width() - m_leftPadding - m_rightPadding - m_leftInset - m_rightInset;
 }
 
 int AbstractDelegate::contentHeight() const
 {
-    return height() - m_topPadding - m_bottomPadding;
+    return height() - m_topPadding - m_bottomPadding - m_topInset - m_bottomInset;
 }
 
 
