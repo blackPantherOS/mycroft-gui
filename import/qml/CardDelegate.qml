@@ -28,6 +28,8 @@ Delegate {
     topPadding: 0
     rightPadding: 0
     
+    skillBackgroundColorOverlay: "black"
+    
     rightInset: 30
     leftInset: 30
     topInset: 30
@@ -35,26 +37,23 @@ Delegate {
     
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
-    property alias cardBackgoundBorderColor: cardBackgound.color
-    property alias cardBackgroundOverlayColor: backgroundColor.color
+    property alias cardBackgoundOverlayColor: cardBackgound.color
     property alias cardBackgroundImage: backgroundImage.source
+    property bool isbgvisible: backgroundImage.visible
     property int cardRadius: 20
     
     background: Rectangle {
         id: cardBackgound
-        anchors.fill: parent
-        color: "black"
-        z: 1
-            
+        radius: cardRadius
+        color: Qt.rgba(255, 255, 255, 0.1)
+        
         Image {
             id: backgroundImage
             anchors.fill: parent
-            anchors.leftMargin: root.leftInset
-            anchors.rightMargin: root.rightInset
-            anchors.topMargin: root.topInset
-            anchors.bottomMargin: root.bottomInset
+            z: -1
             source: ""
-            layer.enabled: true
+            visible: source != "" ? 1 : 0 
+            layer.enabled: source != "" ? 1 : 0
             layer.effect: OpacityMask {
                 maskSource: Rectangle {
                     width: backgroundImage.width
@@ -63,17 +62,6 @@ Delegate {
                     radius: cardRadius
                 }
             }
-        }
-        
-        Rectangle {
-            id: backgroundColor
-            anchors.fill: parent
-            anchors.leftMargin: root.leftInset
-            anchors.rightMargin: root.rightInset
-            anchors.topMargin: root.topInset
-            anchors.bottomMargin: root.bottomInset
-            color: Qt.rgba(255, 255, 255, 0.5)
-            radius: cardRadius
         }
     }
 
