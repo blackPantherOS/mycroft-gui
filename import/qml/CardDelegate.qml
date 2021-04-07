@@ -28,23 +28,16 @@ Delegate {
     topPadding: 0
     rightPadding: 0
     
-    rightInset: cardRightPadding
-    leftInset: cardLeftPadding
-    topInset: cardTopPadding
-    bottomInset: cardBottomPadding
+    rightInset: 30
+    leftInset: 30
+    topInset: 30
+    bottomInset: 35
     
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
     property alias cardBackgoundBorderColor: cardBackgound.color
     property alias cardBackgroundOverlayColor: backgroundColor.color
     property alias cardBackgroundImage: backgroundImage.source
-    
-    // Cards always control the padding and actual card radius
-    // This allows the card to be set as fullscreen or squared
-    property int cardLeftPadding: 30
-    property int cardRightPadding: 30
-    property int cardTopPadding: 30
-    property int cardBottomPadding: 35
     property int cardRadius: 20
     
     background: Rectangle {
@@ -56,10 +49,10 @@ Delegate {
         Image {
             id: backgroundImage
             anchors.fill: parent
-            anchors.leftMargin: cardLeftPadding
-            anchors.rightMargin: cardRightPadding
-            anchors.topMargin: cardTopPadding
-            anchors.bottomMargin: cardBottomPadding
+            anchors.leftMargin: root.leftInset
+            anchors.rightMargin: root.rightInset
+            anchors.topMargin: root.topInset
+            anchors.bottomMargin: root.bottomInset
             source: ""
             layer.enabled: true
             layer.effect: OpacityMask {
@@ -75,10 +68,10 @@ Delegate {
         Rectangle {
             id: backgroundColor
             anchors.fill: parent
-            anchors.leftMargin: cardLeftPadding
-            anchors.rightMargin: cardRightPadding
-            anchors.topMargin: cardTopPadding
-            anchors.bottomMargin: cardBottomPadding
+            anchors.leftMargin: root.leftInset
+            anchors.rightMargin: root.rightInset
+            anchors.topMargin: root.topInset
+            anchors.bottomMargin: root.bottomInset
             color: Qt.rgba(255, 255, 255, 0.5)
             radius: cardRadius
         }
