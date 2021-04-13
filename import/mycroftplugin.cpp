@@ -74,6 +74,7 @@ void MycroftPlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<GlobalSettings>(uri, 1, 0, "GlobalSettings", globalSettingsSingletonProvider);
     qmlRegisterSingletonType<FileReader>(uri, 1, 0, "FileReader", fileReaderSingletonProvider);
     qmlRegisterSingletonType<AudioRec>(uri, 1, 0, "AudioRec", audioRecSingletonProvider);
+    qmlRegisterSingletonType(QUrl(QStringLiteral("qrc:/qml/Units.qml")), uri, 1, 0, "Units");
     qmlRegisterType<AbstractSkillView>(uri, 1, 0, "AbstractSkillView");
     qmlRegisterType<AbstractDelegate>(uri, 1, 0, "AbstractDelegate");
     qmlRegisterType(QUrl(QStringLiteral("qrc:/qml/AudioPlayer.qml")), uri, 1, 0, "AudioPlayer");
