@@ -20,6 +20,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12 as Controls
 import org.kde.kirigami 2.12 as Kirigami
 import QtGraphicalEffects 1.12
+import Mycroft 1.0 as Mycroft
 
 Delegate {
     id: root
@@ -27,13 +28,14 @@ Delegate {
     bottomPadding: 0
     topPadding: 0
     rightPadding: 0
+    property int gridUnit: Mycroft.Units.gridUnit
     
     skillBackgroundColorOverlay: "black"
     
-    rightInset: 30
-    leftInset: 30
-    topInset: 30
-    bottomInset: 35
+    rightInset: gridUnit * 2
+    leftInset: gridUnit * 2
+    topInset: gridUnit * 2
+    bottomInset: gridUnit * 2
     
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
@@ -44,7 +46,7 @@ Delegate {
     background: Rectangle {
         id: cardBackgound
         radius: cardRadius
-        color: Qt.rgba(255, 255, 255, 0.1)
+        color: Qt.rgba(0, 0, 0, 0.5)
         
         Image {
             id: backgroundImage
