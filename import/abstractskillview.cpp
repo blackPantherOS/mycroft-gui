@@ -488,6 +488,8 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
             return;
         }
 
+        qWarning() << "Arrived mycroft.gui.list.insert, delegateUrls are" << delegateUrls;
+
         QList <DelegateLoader *> delegateLoaders;
         for (const auto &urlString : delegateUrls) {
             const QUrl delegateUrl = QUrl::fromUserInput(urlString);
@@ -498,6 +500,8 @@ void AbstractSkillView::onGuiSocketMessageReceived(const QString &message)
 
             DelegateLoader *loader = new DelegateLoader(this);
             loader->init(skillId, delegateUrl);
+
+            qWarning() << "Created a new DelegateLoader" << loader << "which will load" << delegateUrl << "for the skill" << skillId;
 
             if (!m_translatorsForSkill.contains(skillId)) {
                 QTranslator *translator = new QTranslator(this);
