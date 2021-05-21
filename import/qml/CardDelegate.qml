@@ -39,7 +39,7 @@ Delegate {
     
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
-    property alias cardBackgoundOverlayColor: cardBackgound.color
+    property alias cardBackgroundOverlayColor: cardBackgound.color
     property alias cardBackgroundImage: backgroundImage.source
     property int cardRadius: 20
     
