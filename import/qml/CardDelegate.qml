@@ -39,12 +39,12 @@ Delegate {
     
     // Allows cards to set the background image of only the card
     // Allows setting a color overlay for card background
-    property alias cardBackgroundOverlayColor: cardBackgound.color
+    property alias cardBackgroundOverlayColor: cardBackground.color
     property alias cardBackgroundImage: backgroundImage.source
     property int cardRadius: 20
     
     background: Rectangle {
-        id: cardBackgound
+        id: cardBackground
         radius: cardRadius
         color: Qt.rgba(0, 0, 0, 0.5)
         
