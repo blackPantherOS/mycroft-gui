@@ -50,6 +50,16 @@ Item {
             playButton.forceActiveFocus();
         }
     }
+
+    function msToTime(duration) {
+        var seconds = parseInt((duration/1000)%60);
+        var minutes = parseInt((duration/(1000*60))%60);
+
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        return minutes + ":" + seconds;
+    }
     
     Timer {
         id: syncStatusTimer
@@ -251,9 +261,7 @@ Item {
 
                 Controls.Label {
                     id: positionLabel
-                    readonly property int minutes: Math.floor(player.position / 60000)
-                    readonly property int seconds: Math.round((player.position % 60000) / 1000)
-                    text: Qt.formatTime(new Date(0, 0, 0, 0, minutes, seconds), qsTr("mm:ss"))
+                    text: msToTime(player.position) + " / " + msToTime(player.duration)
                 }
             }
         }
