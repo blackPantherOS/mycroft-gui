@@ -1,9 +1,40 @@
-#!/bin/sh
-#If stop command is defined use it
-if ! test -z "$MYCROFT_STOP_CMD"; then
-	$MYCROFT_STOP_CMD
+#!/usr/bin/sh
+# Rewritten for RPM installation support on blackPanther OS
+# Charles K Barza * info@blakpanther.hu
+
+if [ "x86_64" = "$(uname -m)" ] ;then
+    LIB="/usr/lib64"
 else
-	# Use default git install
-	cd "${MYCROFT_CORE_DIR}"|| exit
-	./stop-mycroft.sh
+    LIB="/usr/lib"
 fi
+
+if [[ $( pgrep -f "python3 (.*)-m mycroft.*${1}" ) ]] ; then
+ if [ -x $LIB/mycroft-core/stop-mycroft.sh ] ;then
+    cd $LIB/mycroft-core || exit
+    ./stop-mycroft.sh
+ elif [ -x /usr/share/mycroft-core/stop-mycroft.sh ] ;then
+    cd /usr/share/mycroft-core|| exit
+	./stop-mycroft.sh
+ elif [ -x $HOME/mycroft-core/stop-mycroft.sh ];then
+    cd "$HOME/mycroft-core" || exit
+	./stop-mycroft.sh
+	
+ else
+    FIND=$(find $HOME -maxdepth 5 -type f -name stop-mycroft.sh -print -quit)
+    if [ -n "$FIND" ];then
+	SOURCE="${FIND}"
+	DIR="$( dirname "$SOURCE" )"
+	echo "Found MyCroft Install Here: $DIR"
+	cd $DIR || exit
+	./stop-mycroft.sh
+    else
+	echo "Missing Mycroft installation.... exiting"
+    fi
+ fi
+
+ else
+ 
+ echo "Mycroft not running on your system...."
+
+fi
+

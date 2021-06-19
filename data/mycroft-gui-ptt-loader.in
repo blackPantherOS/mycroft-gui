@@ -1,4 +1,31 @@
-#!/bin/sh
+#!/usr/bin/sh
 
-# Use default git install location
-source ${MYCROFT_CORE_DIR}/venv-activate.sh && mycroft_ptt_client
+# Rewritten for RPM installation support on blackPanther OS
+# Charles K Barza * info@blakpanther.hu
+
+if [ "x86_64" = "$(uname -m)" ] ;then
+    LIB="/usr/lib64"
+else
+    LIB="/usr/lib"
+fi
+
+ if [ -x $LIB/mycroft-core/start-mycroft.sh ] ;then
+    source $LIB/mycroft-core/venv-activate.sh && mycroft_ptt_client
+ elif [ -x /usr/share/mycroft-core/start-mycroft.sh ] ;then
+    source /usr/share/mycroft-core/venv-activate.sh && mycroft_ptt_client
+ elif [ -x $HOME/mycroft-core/start-mycroft.sh ];then
+    source $HOME/mycroft-core/venv-activate.sh && mycroft_ptt_client
+	
+ else
+    FIND=$(find $HOME -maxdepth 5 -type f -name start-mycroft.sh -print -quit)
+    if [ -n "$FIND" ];then
+	SOURCE="${FIND}"
+	DIR="$( dirname "$SOURCE" )"
+	echo "Found MyCroft Install Here: $DIR"
+	source $DIR/venv-activate.sh && mycroft_ptt_client
+    else
+	echo "Missing Mycroft installation.... exiting"
+    fi
+ fi
+
+
