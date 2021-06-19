@@ -30,9 +30,10 @@ show_menus() {
     echo "3. MANJARO/ARCH"
     echo "4. ALPINE LINUX"
     echo "5. openSUSE Leap 15.x"
-    echo "6. OTHERS"
-    echo "7. UPDATE INSTALLATION"
-    echo "8. EXIT"
+    echo "6. blackPanther OS 18.x"
+    echo "7. OTHERS"
+    echo "8. UPDATE INSTALLATION"
+    echo "9. EXIT"
 }
 
 read_options() {
@@ -45,9 +46,10 @@ read_options() {
 		3) manjaro ;;
 		4) alpine ;;
 		5) opensuse ;;
-		6) others ;;
-		7) updateinstall;;
-		8) exit 0;;
+		6) blackpantheros ;;
+		7) others ;;
+		8) updateinstall;;
+		9) exit 0;;
 		*) echo -e "${RED}Error...${STD}" && sleep 2
 	esac
 }
@@ -107,6 +109,21 @@ opensuse() {
     echo "Please Enter Authentication For Installing System Dependencies"
     sudo zypper --non-interactive install cmake extra-cmake-modules kio-devel kio-extras5 plasma-framework-devel libqt5-qtwebsockets-devel libqt5-qtwebview-devel libqt5-qtdeclarative-devel libqt5-qtmultimedia-devel libQt5QuickControls2-devel libqt5-qtwebengine-devel libqt5-qtbase-devel ki18n-devel kdbusaddons-devel
   
+}
+
+blackpantheros() {
+    echo "Starting Installation For blackPanther OS 18.x"
+    echo ""
+    echo "The development headers for the following packages will be installed: cmake extra-cmake-modules kio-devel kio-extras5 plasma-framework libqt5-qtwebsockets libqt5-qtwebview libqt5-qtdeclarative libqt5-qtmultimedia libQt5QuickControls2 libqt5-qtwebengine libqt5-qtbase ki18n kdbusaddons"
+    echo ""
+    echo "Please Enter Authentication For Installing System Dependencies"
+    if [ -x /usr/bin/sudo ];then
+	sudo installing cmake extra-cmake-modules kio-devel kioarchive-devel plasma-framework-devel qtwebsockets5-devel qt5webview-devel qt5qml-devel qt5multimedia-devel qt5quickcontrols2-devel qt5webengine-devel qtbase5-devel ki18n-devel kdbusaddons-devel
+    else
+	# self authenticaion
+        installing cmake extra-cmake-modules kio-devel kioarchive-devel plasma-framework-devel qtwebsockets5-devel qt5webview-devel qt5qml-devel qt5multimedia-devel qt5quickcontrols2-devel qt5webengine-devel qtbase5-devel ki18n-devel kdbusaddons-devel
+    fi
+    build_gui
 }
 
 updateinstall() {
